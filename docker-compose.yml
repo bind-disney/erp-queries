@@ -1,0 +1,31 @@
+version: '3.7'
+
+services:
+  db:
+    # For MySQL 8.0 see issue https://github.com/passbolt/passbolt_docker/issues/103
+    image: mysql:5.7
+    container_name: erp-db
+    hostname: erp-db
+    env_file:
+      - ./env/db.env
+    ports:
+      - "127.0.0.1:33306:3306"
+    volumes:
+      - db_data
+
+  app:
+    image: python:3.7
+    container_name: erp-app
+    hostname: erp-app
+    working_dir: /app
+    command: tail -f /dev/null
+    depends_on:
+      - db
+    env_file:
+      - ./env/db.env
+    volumes:
+      - ./src:/app
+
+volumes:
+  db_data:
+    driver: local

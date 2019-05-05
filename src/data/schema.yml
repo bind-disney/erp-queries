@@ -1,0 +1,108 @@
+#https://www.slideshare.net/navicorevn/hierarchical-data-models-in-relational-databases
+
+Employee:
+  id:
+    type: integer
+    null: false
+    primary_key: true
+  name:
+    type: string
+    null: false
+  surname:
+    type: string
+    null: false
+  patronymic:
+    type: string
+    null: false
+  score_rating:
+    type: decimal
+    null: false
+    default: 0.0
+  email:
+    type: string
+    null: false
+  email_confirmed_at:
+    type: datetime
+  phone:
+    type: string
+  phone_confirmed_at:
+    type: datetime
+
+Customer:
+  id:
+    type: integer
+    null: false
+    primary_key: true
+  name:
+    type: string
+    null: false
+
+ServiceRequest:
+  id:
+    type: integer
+    null: false
+    primary_key: true
+  service_id:
+    type: integer
+    null: false
+  employee_id:
+    type: integer
+    null: false
+  status:
+    type: string
+    null: false
+    default: new
+
+Service:
+  id:
+    type: integer
+    null: false
+    primary_key: true
+  name:
+    type: string
+    null: false
+  category_id:
+    type: integer
+    null: false
+
+ServiceCategory:
+  id:
+    type: integer
+    null: false
+    primary_key: true
+  name:
+    type: string
+    null: false
+  left:
+    type: integer
+    null: false
+  right:
+    type: integer
+    null: false
+  level:
+    type: integer
+    null: false
+
+Complaint:
+  id:
+    type: integer
+    null: false
+    primary_key: true
+  customer_id:
+    type: integer
+    null: false
+  employee_id:
+    type: integer
+    null: false
+  category_id:
+    type: integer
+    null: false
+
+ComplaintCategory:
+  id:
+    type: integer
+    null: false
+    primary_key: true
+  name:
+    type: string
+    null: false
