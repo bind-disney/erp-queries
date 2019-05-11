@@ -9,7 +9,7 @@ from sqlalchemy.util import clsname_as_plain_name
 class Base(object):
     @declared_attr
     def __tablename__(cls):
-        return inflector.plural(clsname_as_plain_name(cls))
+        return inflector.plural('_'.join(clsname_as_plain_name(cls).split(' ')))
 
     __table_args__ = {'mysql_engine': 'InnoDB', 'mysql_charset': os.getenv('MYSQL_CHARSET', 'utf8mb4')}
 
@@ -21,21 +21,7 @@ class Base(object):
 Base = declarative_base(cls=Base)
 
 
-def establish_connection():
-    db_host = os.getenv('MYSQL_HOST')
-    db_port = os.getenv('MYSQL_PORT', 3306)
-    db_user = os.getenv('MYSQL_USER')
-    db_password = os.getenv('MYSQL_PASSWORD')
-    db_name = os.getenv('MYSQL_DATABASE')
-    db_charset = os.getenv('MYSQL_CHARSET', 'utf8mb4')
-    database_url_format = 'mysql+mysqldb://{user}:{password}@{host}:{port}/{name}?charset={charset}'
-    database_url = database_url_format.format(user=db_user,
-                                              password=db_password,
-                                              host=db_host,
-                                              port=db_port,
-                                              name=db_name,
-                                              charset=db_charset)
-
+def create_connection():
     engine_options = {
         'pool_size': 10,
         'max_overflow': 10,
@@ -44,7 +30,27 @@ def establish_connection():
         'echo': True
     }
 
-    engine = create_engine(database_url, **engine_options)
+    return create_engine(database_url(), **engine_options)
+
+
+def establish_connection():
+    engine = create_connection()
     engine.connect()
 
     return engine
+
+
+def database_url():
+    db_host = os.getenv('MYSQL_HOST')
+    db_port = os.getenv('MYSQL_PORT', 3306)
+    db_user = os.getenv('MYSQL_USER')
+    db_password = os.getenv('MYSQL_PASSWORD')
+    db_name = os.getenv('MYSQL_DATABASE')
+    db_charset = os.getenv('MYSQL_CHARSET', 'utf8mb4')
+    database_url_format = 'mysql+mysqldb://{user}:{password}@{host}:{port}/{name}?charset={charset}'
+    return database_url_format.format(user=db_user,
+                                      password=db_password,
+                                      host=db_host,
+                                      port=db_port,
+                                      name=db_name,
+                                      charset=db_charset)

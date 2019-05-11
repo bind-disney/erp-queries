@@ -1,14 +1,16 @@
 # -*- coding: utf-8
 
+import sys
 from datetime import timedelta
 from sqlalchemy.orm import sessionmaker
 from util.random import generator, random_bool, random_digits
-from models.base import Base, establish_connection
-from models.passport import Passport, Sex
-from models.contractor import Contractor
+from models import establish_connection, Base, Passport, Sex, Contractor, Customer
+from models import ServiceCategory, Service, Order, OrderStatus, Review, ReviewType
 
 engine = establish_connection()
 Base.metadata.create_all(engine)
+
+sys.exit()
 
 Session = sessionmaker(bind=engine)
 session = Session()
@@ -16,9 +18,10 @@ session = Session()
 place_of_birth_format = u'Россия, {city}'
 authority_format = u'ФМС {code}-{number}'
 
-users_count = 1
+contractors_count = 1
+customers_count = 1
 
-for i in range(users_count):
+for i in range(contractors_count):
     if random_bool():
         sex = Sex.female
         name = generator.first_name_female()
@@ -61,6 +64,10 @@ for i in range(users_count):
 
     session.add(passport)
     session.add(contractor)
+
+for i in range(customers_count):
+    customer = Customer(name=generator.name())
+    session.add(customer)
 
 session.commit()
 session.close()

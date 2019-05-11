@@ -1,7 +1,7 @@
 from .base import Base
 from .passport import Passport
 from sqlalchemy import Column, Integer, DECIMAL, Unicode, DateTime, ForeignKey
-from sqlalchemy.orm import relationship
+from sqlalchemy.orm import relation, backref
 
 
 class Contractor(Base):
@@ -18,4 +18,4 @@ class Contractor(Base):
                          index=True,
                          nullable=False)
 
-    passport = relationship(Passport, backref='contractor', primaryjoin=Passport.id == passport_id)
+    passport = relation(Passport, backref=backref('contractor'), primaryjoin=Passport.id == passport_id)
