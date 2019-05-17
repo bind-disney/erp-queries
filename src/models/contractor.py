@@ -8,6 +8,7 @@ class Contractor(Base):
     surname = Column(Unicode(255), nullable=False)
     patronymic = Column(Unicode(255), nullable=False)
     rating = Column(DECIMAL(5, 2), nullable=False, default=0.0)
+    work_experience = Column(Integer, nullable=False, default=0)
     email = Column(Unicode(100), unique=True, index=True, nullable=False)
     phone_number = Column(Unicode(20), unique=True, index=True, nullable=False)
     email_confirmed_at = Column(DateTime)
