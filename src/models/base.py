@@ -47,10 +47,11 @@ def database_url():
     db_password = os.getenv('MYSQL_PASSWORD')
     db_name = os.getenv('MYSQL_DATABASE')
     db_charset = os.getenv('MYSQL_CHARSET', 'utf8mb4')
-    database_url_format = 'mysql+mysqldb://{user}:{password}@{host}:{port}/{name}?charset={charset}'
-    return database_url_format.format(user=db_user,
-                                      password=db_password,
-                                      host=db_host,
-                                      port=db_port,
-                                      name=db_name,
-                                      charset=db_charset)
+    db_url_format = 'mysql+mysqldb://{user}:{password}@{host}:{port}/{name}?charset={charset}'
+
+    return db_url_format.format(user=db_user,
+                                password=db_password,
+                                host=db_host,
+                                port=db_port,
+                                name=db_name,
+                                charset=db_charset)

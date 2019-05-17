@@ -4,7 +4,7 @@ from .service import Service
 from .customer import Customer
 from .contractor import Contractor
 from sqlalchemy import Column, Integer, Boolean, ForeignKey, Enum
-from sqlalchemy.orm import relation, backref
+from sqlalchemy.orm import relation
 
 
 class OrderStatus(enum.Enum):
@@ -31,6 +31,6 @@ class Order(Base):
     license_required = Column(Boolean, nullable=False)
     priority = Column(Integer, index=True, nullable=False)
 
-    service = relation(Service, primaryjoin=Service.id == service_id)
-    customer = relation(Customer, backref=backref('orders'), primaryjoin=Customer.id == customer_id)
-    contractor = relation(Contractor, backref=backref('orders'), primaryjoin=Contractor.id == contractor_id)
+    service = relation(Service, back_populates='orders', primaryjoin=Service.id == service_id)
+    customer = relation(Customer, back_populates='orders', primaryjoin=Customer.id == customer_id)
+    contractor = relation(Contractor, back_populates='orders', primaryjoin=Contractor.id == contractor_id)

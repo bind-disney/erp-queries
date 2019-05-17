@@ -18,8 +18,8 @@ session = Session()
 place_of_birth_format = u'Россия, {city}'
 authority_format = u'ФМС {code}-{number}'
 
-contractors_count = 1
-customers_count = 1
+contractors_count = 10
+customers_count = 10
 
 for i in range(contractors_count):
     if random_bool():
@@ -62,7 +62,6 @@ for i in range(contractors_count):
                             phone_number_confirmed_at=phone_number_confirmed_at,
                             passport=passport)
 
-    session.add(passport)
     session.add(contractor)
 
 for i in range(customers_count):

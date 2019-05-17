@@ -1,6 +1,7 @@
 import enum
 from .base import Base
 from sqlalchemy import Column, Integer, Unicode, CHAR, Date, Enum, UniqueConstraint
+from sqlalchemy.orm import relation
 
 
 class Sex(enum.Enum):
@@ -22,3 +23,5 @@ class Passport(Base):
     sex = Column(Enum(Sex), nullable=False)
     issued_at = Column(Date, nullable=False)
     authority = Column(Unicode(255), nullable=False)
+
+    contractor = relation('Contractor', back_populates='passport', cascade='all, delete, delete-orphan')

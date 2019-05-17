@@ -3,7 +3,7 @@ from .base import Base
 from .order import Order
 from .service_category import ServiceCategory
 from sqlalchemy import Column, Integer, UnicodeText, Enum, ForeignKey
-from sqlalchemy.orm import relation, backref
+from sqlalchemy.orm import relation
 
 
 class ReviewType(enum.Enum):
@@ -30,6 +30,9 @@ class Review(Base):
     review_type = Column(Enum(ReviewType), index=True, nullable=False)
     content = Column(UnicodeText(4000), nullable=False)
 
-    order = relation(Order, backref=backref('reviews'), primaryjoin=Order.id == order_id)
+    order = relation(Order,
+                     back_populates='reviews',
+                     cascade='all, delete, delete-orphan',
+                     primaryjoin=Order.id == order_id)
     order_category = relation(ServiceCategory, primaryjoin=ServiceCategory.id == order_category_id)
     service_category = relation(ServiceCategory, primaryjoin=ServiceCategory.id == service_category_id)

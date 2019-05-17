@@ -1,5 +1,6 @@
 from .base import Base
 from sqlalchemy import Column, Integer, Unicode, Index
+from sqlalchemy.orm import relation
 
 
 class ServiceCategory(Base):
@@ -19,3 +20,5 @@ class ServiceCategory(Base):
     node_level = Column(Integer, nullable=False)
     left_node = Column(Integer, nullable=False)
     right_node = Column(Integer, nullable=False)
+
+    services = relation('Service', back_populates='category', cascade='all, delete, delete-orphan')

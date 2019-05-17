@@ -1,7 +1,7 @@
 from .base import Base
 from .service_category import ServiceCategory
 from sqlalchemy import Column, Integer, Unicode, ForeignKey
-from sqlalchemy.orm import relation, backref
+from sqlalchemy.orm import relation
 
 
 class Service(Base):
@@ -11,4 +11,5 @@ class Service(Base):
                          index=True,
                          nullable=False)
 
-    category = relation(ServiceCategory, backref=backref('services'), primaryjoin=ServiceCategory.id == category_id)
+    category = relation('ServiceCategory', back_populates='services', primaryjoin=ServiceCategory.id == category_id)
+    orders = relation('Order', back_populates='service', cascade='all, delete, delete-orphan')
